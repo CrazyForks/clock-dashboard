@@ -1,0 +1,28 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*' # 当推送以 v 开头的标签时触发
+
+permissions:
+  contents: write # 必须开启写入权限以创建 Release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取完整历史以生成日志
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # 自动从 CHANGELOG.md 中提取当前版本的描述作为 Release 内容
+          body_path: CHANGELOG.md
+          # 如果不想手动提取，可以开启 generate_release_notes 让 GitHub 自动生成
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
