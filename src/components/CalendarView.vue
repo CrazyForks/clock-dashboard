@@ -1,96 +1,100 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-vue-next';
-import { getLunarDate } from '../utils/lunar';
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { computed, ref } from 'vue'
+import { getLunarDate } from '../utils/lunar'
 
-const currentMonthDate = ref(new Date());
-const today = ref(new Date());
+const currentMonthDate = ref(new Date())
+const today = ref(new Date())
 
-const year = computed(() => currentMonthDate.value.getFullYear());
-const month = computed(() => currentMonthDate.value.getMonth());
+const year = computed(() => currentMonthDate.value.getFullYear())
+const month = computed(() => currentMonthDate.value.getMonth())
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 const isCurrentMonth = computed(() => {
-  return year.value === today.value.getFullYear() && month.value === today.value.getMonth();
-});
+  return year.value === today.value.getFullYear() && month.value === today.value.getMonth()
+})
 
 const calendarDays = computed(() => {
-  const y = year.value;
-  const m = month.value;
-  const firstDay = new Date(y, m, 1).getDay();
-  const daysInMonth = new Date(y, m + 1, 0).getDate();
-  const prevMonthDays = new Date(y, m, 0).getDate();
-  
-  const days = [];
-  
+  const y = year.value
+  const m = month.value
+  const firstDay = new Date(y, m, 1).getDay()
+  const daysInMonth = new Date(y, m + 1, 0).getDate()
+  const prevMonthDays = new Date(y, m, 0).getDate()
+
+  const days = []
+
   // Prev month
   for (let i = firstDay - 1; i >= 0; i--) {
-    const d = new Date(y, m - 1, prevMonthDays - i);
-    days.push({ date: d, isOtherMonth: true, lunar: getLunarDate(d) });
+    const d = new Date(y, m - 1, prevMonthDays - i)
+    days.push({ date: d, isOtherMonth: true, lunar: getLunarDate(d) })
   }
-  
+
   // Current month
   for (let i = 1; i <= daysInMonth; i++) {
-    const d = new Date(y, m, i);
-    days.push({ 
-      date: d, 
-      isOtherMonth: false, 
+    const d = new Date(y, m, i)
+    days.push({
+      date: d,
+      isOtherMonth: false,
       isToday: d.toDateString() === today.value.toDateString(),
-      lunar: getLunarDate(d) 
-    });
+      lunar: getLunarDate(d),
+    })
   }
-  
+
   // Next month
-  const remaining = 42 - days.length;
+  const remaining = 42 - days.length
   for (let i = 1; i <= remaining; i++) {
-    const d = new Date(y, m + 1, i);
-    days.push({ date: d, isOtherMonth: true, lunar: getLunarDate(d) });
+    const d = new Date(y, m + 1, i)
+    days.push({ date: d, isOtherMonth: true, lunar: getLunarDate(d) })
   }
-  
-  return days;
-});
+
+  return days
+})
 
 function changeMonth(delta: number) {
-  const d = new Date(currentMonthDate.value);
-  d.setMonth(d.getMonth() + delta);
-  currentMonthDate.value = d;
+  const d = new Date(currentMonthDate.value)
+  d.setMonth(d.getMonth() + delta)
+  currentMonthDate.value = d
 }
 
 function goToToday() {
-  today.value = new Date();
-  currentMonthDate.value = new Date();
+  today.value = new Date()
+  currentMonthDate.value = new Date()
 }
 
 function refreshToday() {
-  today.value = new Date();
+  today.value = new Date()
   // 如果当前正在看“今天”所在的月份，则确保视图也是最新的
   if (isCurrentMonth.value) {
-    currentMonthDate.value = new Date();
+    currentMonthDate.value = new Date()
   }
 }
 
-defineExpose({ refreshToday });
+defineExpose({ refreshToday })
 </script>
 
 <template>
   <div class="full-screen-calendar text-white">
     <div class="flex items-center justify-between w-full mb-8 px-4 md:px-12">
       <div class="text-left">
-        <h2 class="text-4xl md:text-5xl font-bold tracking-widest">{{ year }}年{{ month + 1 }}月</h2>
-        <p class="text-lg opacity-50 tracking-[0.4em] uppercase mt-1">{{ monthNames[month] }}</p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-widest">
+          {{ year }}年{{ month + 1 }}月
+        </h2>
+        <p class="text-lg opacity-50 tracking-[0.4em] uppercase mt-1">
+          {{ monthNames[month] }}
+        </p>
       </div>
       <div class="flex items-center gap-3">
-        <button @click="changeMonth(-1)" class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300">
+        <button class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300" @click="changeMonth(-1)">
           <ChevronLeft class="w-6 h-6 " />
         </button>
-        <button 
-          @click="goToToday" 
+        <button
           class="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 text-md font-medium"
+          @click="goToToday"
         >
           今天
         </button>
-        <button @click="changeMonth(1)" class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300">
+        <button class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300" @click="changeMonth(1)">
           <ChevronRight class="w-6 h-6 " />
         </button>
       </div>
@@ -103,15 +107,15 @@ defineExpose({ refreshToday });
         </div>
       </div>
       <div class="calendar-grid">
-        <div 
-          v-for="(day, index) in calendarDays" 
+        <div
+          v-for="(day, index) in calendarDays"
           :key="index"
           class="calendar-day"
           :class="{ 'other-month': day.isOtherMonth, 'today': day.isToday }"
         >
           <div class="day-number-wrapper flex flex-col items-center justify-center">
             <span class="text-2xl md:text-3xl font-bold">{{ day.date.getDate() }}</span>
-            <span 
+            <span
               class="lunar-text text-sm font-normal mt-1"
               :class="day.lunar.isFestival ? 'text-blue-300 opacity-100' : 'opacity-60'"
             >

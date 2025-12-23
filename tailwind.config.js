@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -13,8 +13,8 @@ export default {
       colors: {
         accent: {
           glow: 'rgba(255, 255, 255, 0.12)',
-        }
-      }
+        },
+      },
     },
   },
   plugins: [],

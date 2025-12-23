@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import legacy from '@vitejs/plugin-legacy'
-import { VitePWA } from 'vite-plugin-pwa'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import legacy from '@vitejs/plugin-legacy'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -13,7 +13,7 @@ export default defineConfig({
     vue(),
     legacy({
       targets: ['ios >= 12'],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
     }),
     VitePWA({
       registerType: 'autoUpdate',
@@ -29,22 +29,22 @@ export default defineConfig({
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
-      }
-    })
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
+      },
+    }),
   ],
   server: {
     host: true, // 监听所有地址，包括局域网
