@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { Droplets, PersonStanding, Zap } from 'lucide-vue-next'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useWeather } from '../composables/useWeather'
+import WeatherSettingsModal from './WeatherSettingsModal.vue'
 
-const { weatherData, loading, locationText, weatherInfo, getLocationAndWeather } = useWeather()
+const { weatherData, loading, locationText, weatherInfo, refreshInterval, getLocationAndWeather } = useWeather()
 
+const showSettings = ref(false)
 let weatherTimer: number
+
+function setupTimer() {
+  if (weatherTimer) clearInterval(weatherTimer)
+  weatherTimer = window.setInterval(getLocationAndWeather, refreshInterval.value * 60 * 1000)
+}
+
+watch(refreshInterval, () => {
+  setupTimer()
+})
 
 onMounted(() => {
   getLocationAndWeather()
-  weatherTimer = window.setInterval(getLocationAndWeather, 20 * 60 * 1000)
+  setupTimer()
 })
 
 onUnmounted(() => {
@@ -22,7 +33,7 @@ onUnmounted(() => {
     id="weather-container"
     class="weather-clickable grid grid-cols-1 md:grid-cols-3 gap-3 w-full pt-10 transition-opacity duration-700"
     :class="{ 'opacity-30': loading, 'opacity-100': !loading }"
-    @click="getLocationAndWeather"
+    @click="showSettings = true"
   >
     <!-- 状态与定位 -->
     <div class="flex items-center justify-center md:justify-start gap-0">
@@ -80,6 +91,12 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+
+  <!-- 天气设置弹窗 -->
+  <WeatherSettingsModal
+    :show="showSettings"
+    @close="showSettings = false"
+  />
 </template>
 
 <style scoped>

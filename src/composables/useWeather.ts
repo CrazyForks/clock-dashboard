@@ -8,7 +8,31 @@ const locationText = ref('定位中...')
 const weatherInfo = ref<WeatherInfo>({ text: '点击刷新', icon: mapWmoCode(-1).icon })
 const cachedCoords = ref<{ lat: number, lon: number, city: string } | null>(null)
 
+// --- Settings State ---
+export type LocationMode = 'auto' | 'coords' | 'city'
+const locationMode = ref<LocationMode>(localStorage.getItem('weather_location_mode') as LocationMode || 'auto')
+const customLat = ref(Number(localStorage.getItem('weather_custom_lat')) || 39.9)
+const customLon = ref(Number(localStorage.getItem('weather_custom_lon')) || 116.4)
+const customCity = ref(localStorage.getItem('weather_custom_city') || '北京市')
+const refreshInterval = ref(Number(localStorage.getItem('weather_refresh_interval')) || 20)
+
+// Effects visibility toggles
+const showRainEffect = ref(localStorage.getItem('weather_show_rain') !== 'false')
+const showThunderEffect = ref(localStorage.getItem('weather_show_thunder') !== 'false')
+const showSnowEffect = ref(localStorage.getItem('weather_show_snow') !== 'false')
+
 export function useWeather() {
+  function saveSettings() {
+    localStorage.setItem('weather_location_mode', locationMode.value)
+    localStorage.setItem('weather_custom_lat', customLat.value.toString())
+    localStorage.setItem('weather_custom_lon', customLon.value.toString())
+    localStorage.setItem('weather_custom_city', customCity.value)
+    localStorage.setItem('weather_refresh_interval', refreshInterval.value.toString())
+    localStorage.setItem('weather_show_rain', showRainEffect.value.toString())
+    localStorage.setItem('weather_show_thunder', showThunderEffect.value.toString())
+    localStorage.setItem('weather_show_snow', showSnowEffect.value.toString())
+  }
+
   async function fetchWeather(lat: number, lon: number, locationName?: string, isRealLocation: boolean = false) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,rain,wind_speed_10m,is_day,apparent_temperature,showers,relative_humidity_2m,precipitation,weather_code&hourly=precipitation_probability,uv_index,temperature_2m&timezone=auto&forecast_days=1`
     try {
@@ -35,6 +59,24 @@ export function useWeather() {
     catch (error) {
       weatherInfo.value.text = '接口错误'
       weatherInfo.value.icon = mapWmoCode(-1).icon
+    }
+  }
+
+  async function fetchByCity(cityName: string) {
+    try {
+      const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=zh&format=json`)
+      const data = await res.json()
+      if (data.results && data.results.length > 0) {
+        const { latitude, longitude, name } = data.results[0]
+        await fetchWeather(latitude, longitude, name, true)
+      }
+      else {
+        throw new Error('找不到城市')
+      }
+    }
+    catch (e) {
+      weatherInfo.value.text = '城市错误'
+      loading.value = false
     }
   }
 
@@ -69,6 +111,18 @@ export function useWeather() {
 
   async function getLocationAndWeather() {
     loading.value = true
+
+    if (locationMode.value === 'coords') {
+      await fetchWeather(customLat.value, customLon.value, '自定义坐标')
+      return
+    }
+
+    if (locationMode.value === 'city') {
+      await fetchByCity(customCity.value)
+      return
+    }
+
+    // Auto mode
     if (cachedCoords.value) {
       const { lat, lon, city } = cachedCoords.value
       await fetchWeather(lat, lon, city, true)
@@ -103,6 +157,15 @@ export function useWeather() {
     loading,
     locationText,
     weatherInfo,
+    locationMode,
+    customLat,
+    customLon,
+    customCity,
+    refreshInterval,
+    showRainEffect,
+    showThunderEffect,
+    showSnowEffect,
+    saveSettings,
     getLocationAndWeather,
   }
 }

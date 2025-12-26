@@ -87,9 +87,17 @@ function save() {
 </script>
 
 <template>
-  <div v-if="show" id="settings-modal" class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center p-4 md:p-6 z-[1000]">
+  <div
+    v-if="show"
+    id="settings-modal"
+    class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center p-4 md:p-6 z-[1000]"
+    @touchstart.stop
+    @touchend.stop
+    @mousedown.stop
+    @mouseup.stop
+  >
     <div class="absolute top-0 left-0 right-0 bottom-0 bg-black/80" @click="emit('close')" />
-    <div class="bg-neutral-900 p-6 md:p-8 rounded-[40px] border border-white/10 w-full max-w-2xl text-white max-h-[90vh] flex flex-col relative">
+    <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl border border-white/10 w-full max-w-2xl text-white max-h-[90vh] flex flex-col relative">
       <div class="flex items-center justify-between mb-6 flex-shrink-0">
         <h3 class="text-2xl font-bold">
           Home Assistant 配置

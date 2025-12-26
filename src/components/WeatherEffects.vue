@@ -2,7 +2,12 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useWeather } from '../composables/useWeather'
 
-const { weatherData } = useWeather()
+const {
+  weatherData,
+  showRainEffect,
+  showThunderEffect,
+  showSnowEffect,
+} = useWeather()
 
 // WMO codes:
 // Rain: 51-55 (drizzle), 61-67 (rain), 80-82 (showers), 95-99 (thunderstorm)
@@ -12,16 +17,19 @@ const { weatherData } = useWeather()
 const weatherCode = computed(() => weatherData.value?.current?.weather_code ?? -1)
 
 const isRaining = computed(() => {
+  if (!showRainEffect.value) return false
   const code = weatherCode.value
   return (code >= 51 && code <= 67) || (code >= 80 && code <= 82) || (code >= 95 && code <= 99)
 })
 
 const isSnowing = computed(() => {
+  if (!showSnowEffect.value) return false
   const code = weatherCode.value
   return (code >= 71 && code <= 77) || (code === 85 || code === 86)
 })
 
 const isThundering = computed(() => {
+  if (!showThunderEffect.value) return false
   const code = weatherCode.value
   return code === 95 || code === 96 || code === 99
 })
