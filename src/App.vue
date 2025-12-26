@@ -1,15 +1,44 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import CalendarView from './components/CalendarView.vue'
 import ClockWeather from './components/ClockWeather.vue'
 import SettingsModal from './components/SettingsModal.vue'
 import SmartHome from './components/SmartHome.vue'
 import WeatherEffects from './components/WeatherEffects.vue'
+import { useWeatherStore } from './stores/weather'
 
 const currentPage = ref(1)
 const showSettings = ref(false)
 const smartHomeRef = ref<any>(null)
 const calendarRef = ref<any>(null)
+
+const weatherStore = useWeatherStore()
+const { weatherData, showRainEffect, showThunderEffect, showSnowEffect } = storeToRefs(weatherStore)
+
+// 判断是否需要渲染天气特效组件
+const shouldShowWeatherEffects = computed(() => {
+  if (!weatherData.value) return false
+
+  const code = weatherData.value.current?.weather_code ?? -1
+
+  if (showRainEffect.value) {
+    const isRaining = (code >= 51 && code <= 67) || (code >= 80 && code <= 82) || (code >= 95 && code <= 99)
+    if (isRaining) return true
+  }
+
+  if (showSnowEffect.value) {
+    const isSnowing = (code >= 71 && code <= 77) || (code === 85 || code === 86)
+    if (isSnowing) return true
+  }
+
+  if (showThunderEffect.value) {
+    const isThundering = code === 95 || code === 96 || code === 99
+    if (isThundering) return true
+  }
+
+  return false
+})
 
 let startX = 0
 let autoReturnTimer: number | null = null
@@ -115,18 +144,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <WeatherEffects />
-
-    <!-- Navigation Dots -->
-    <!-- <div class="nav-dots absolute bottom-10 left-0 right-0 flex justify-center gap-3 z-50">
-      <div
-        v-for="i in [0, 1, 2]"
-        :key="i"
-        class="nav-dot w-2 h-2 rounded-full cursor-pointer transition-all duration-300"
-        :class="currentPage === i ? 'bg-white/80 scale-125' : 'bg-white/20'"
-        @click="goToPage(i)"
-      ></div>
-    </div> -->
+    <WeatherEffects v-if="shouldShowWeatherEffects" />
 
     <!-- Settings Modal -->
     <SettingsModal
