@@ -4,6 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 const props = defineProps<{
   value: number
   trigger?: any
+  showSeconds?: boolean
 }>()
 
 const displayValue = ref(props.value) // 当前显示的数字
@@ -41,7 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="digit-container" :style="{ transform: containerRotate }">
+  <div class="digit-container" :class="{ 'show-seconds': showSeconds }" :style="{ transform: containerRotate }">
     <div
       class="digit-window"
       :class="{ animating: isAnimating }"
@@ -58,8 +59,8 @@ onMounted(() => {
   </div>
 </template>
 
-  <style scoped>
-  .digit-container {
+<style scoped>
+.digit-container {
   position: relative;
   display: inline-block;
   height: 1em;
@@ -69,6 +70,10 @@ onMounted(() => {
   margin: 0 -0.12em;
   vertical-align: middle;
   transition: transform 0.6s linear;
+}
+
+.digit-container.show-seconds {
+  margin: 0 -0.16em;
 }
 
 .digit-window {

@@ -40,23 +40,23 @@ function toggleSeconds() {
       :class="{ 'with-seconds': showSeconds }"
       @click="toggleSeconds"
     >
-      <Digit :value="h1" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
-      <Digit :value="h2" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
+      <Digit :value="h1" :show-seconds="showSeconds" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
+      <Digit :value="h2" :show-seconds="showSeconds" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
 
       <div class="clock-separator">
         :
       </div>
 
-      <Digit :value="m1" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
-      <Digit :value="m2" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
+      <Digit :value="m1" :show-seconds="showSeconds" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
+      <Digit :value="m2" :show-seconds="showSeconds" :trigger="showSeconds ? now.getTime() : Math.floor(now.getTime() / 60000)" />
 
       <div v-if="showSeconds" class="clock-separator second-separator">
         :
       </div>
 
       <template v-if="showSeconds">
-        <Digit class="second-digit" :value="s1" :trigger="now.getTime()" />
-        <Digit class="second-digit" :value="s2" :trigger="now.getTime()" />
+        <Digit class="second-digit" :value="s1" :show-seconds="showSeconds" :trigger="now.getTime()" />
+        <Digit class="second-digit" :value="s2" :show-seconds="showSeconds" :trigger="now.getTime()" />
       </template>
     </div>
 
