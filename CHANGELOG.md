@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/teojs/clock-dashboard/compare/v1.11.0...v1.12.0) (2025-12-29)
+
+
+### Features
+
+* **style:** enhance Digit component to support showSeconds prop for improved display control ([f733672](https://github.com/teojs/clock-dashboard/commit/f733672ebe4347f77355bf586d8fd30bf14377a0))
+
+
+### Bug Fixes
+
+* **weather:** update button styles and disable state in WeatherSettingsModal ([1d06a73](https://github.com/teojs/clock-dashboard/commit/1d06a732eb411e2fcf834009ef0549f0e14d910f))
+
 ## [1.11.0](https://github.com/teojs/clock-dashboard/compare/v1.10.0...v1.11.0) (2025-12-29)
 
 
