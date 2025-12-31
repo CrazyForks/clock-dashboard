@@ -4,6 +4,7 @@
 [![Vue](https://img.shields.io/badge/vue-3.4-brightgreen.svg)](https://vuejs.org/)
 [![Vite](https://img.shields.io/badge/vite-5.0-blueviolet.svg)](https://vitejs.dev/)
 [![releases](https://img.shields.io/github/v/release/teojs/clock-dashboard?color=green&label=releases)](https://github.com/teojs/clock-dashboard/releases)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=teojs.clock-dashboard)
 
 一个基于 Vue 3 + TypeScript + Vite + Tailwind CSS 构建的天气时钟看板。
 将闲置旧 iPad 变为时钟看板，支持天气、农历、日历、Home Assistant 智能设备控制（通过左右滑动切换页面）。
