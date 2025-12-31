@@ -153,13 +153,13 @@ defineExpose({ updateAllStates, entitiesStates })
       </div>
       <div class="flex gap-4">
         <button
-          class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all"
+          class="p-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all"
           :class="{ 'opacity-50 pointer-events-none': isRefreshing }"
           @click="updateAllStates"
         >
           <RotateCw class="w-5 h-5" :class="{ 'animate-spin': isRefreshing }" />
         </button>
-        <button class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all" @click="showSettings = true">
+        <button class="p-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all" @click="showSettings = true">
           <Settings class="w-5 h-5" />
         </button>
       </div>
