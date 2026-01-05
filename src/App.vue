@@ -10,7 +10,6 @@ import ClockWeatherView from './views/ClockWeatherView.vue'
 import SmartHomeView from './views/SmartHomeView.vue'
 
 const currentPage = ref(1)
-const smartHomeRef = ref<any>(null)
 const calendarRef = ref<any>(null)
 
 const weatherStore = useWeatherStore()
@@ -59,11 +58,6 @@ function resetAutoReturnTimer() {
 function goToPage(page: number) {
   currentPage.value = page
   resetAutoReturnTimer()
-
-  // 切换到智能首页 (page 0) 时更新状态
-  if (page === 0 && smartHomeRef.value) {
-    smartHomeRef.value.updateAllStates()
-  }
 
   // 切换到日历看板 (page 2) 时更新当前日期
   if (page === 2 && calendarRef.value) {
@@ -132,7 +126,7 @@ onUnmounted(() => {
       :style="{ transform: `translateX(-${currentPage * 100}vw)`, width: '300vw' }"
     >
       <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
-        <SmartHomeView ref="smartHomeRef" />
+        <SmartHomeView />
       </div>
       <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
         <ClockWeatherView />

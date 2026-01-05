@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { Blinds, Droplets, Fan, Lightbulb, LightbulbOff, Loader2, Power, RotateCw, Settings, Snowflake, Thermometer, Tv, Zap } from 'lucide-vue-next'
+import { AirVent, AlertTriangle, Blinds, Droplets, Fan, Lightbulb, Loader2, Power, Settings, Thermometer, Tv, Zap } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
-import { callService, fetchEntityState as fetchEntityStateApi } from '../api/homeassistant'
+import { computed, onUnmounted, ref, watch } from 'vue'
+import { haSocket } from '../api/ha-websocket'
 import SmartSettingsModal from '../components/SmartSettingsModal.vue'
 import { useConfigStore } from '../stores/config'
 
 const configStore = useConfigStore()
 const { haConfig } = storeToRefs(configStore)
 
+const isConnecting = ref(false)
+
 const entitiesStates = ref<Record<string, any>>({})
 const loadingStates = ref<Record<string, boolean>>({})
-const isRefreshing = ref(false)
 const showSettings = ref(false)
+
+const connectErrorText = ref('')
 
 // 计算要在顶部标题显示的温湿度信息（取第一个空调设备的数据）
 const headerClimateInfo = computed(() => {
@@ -40,14 +43,14 @@ function isEntityOn(entityId: string) {
     return state === 'open'
   }
   if (entityId.startsWith('climate.')) {
-    return state !== 'off' && state !== 'unavailable'
+    return state && state !== 'off' && state !== 'unavailable'
   }
   return state === 'on'
 }
 
-function getIcon(domain: string, isOn: boolean) {
+function getIcon(domain: string, _isOn: boolean) {
   if (domain === 'light')
-    return isOn ? Lightbulb : LightbulbOff
+    return Lightbulb
   if (domain === 'switch')
     return Power
   if (domain === 'fan')
@@ -57,43 +60,35 @@ function getIcon(domain: string, isOn: boolean) {
   if (domain === 'cover')
     return Blinds
   if (domain === 'climate')
-    return Snowflake
+    return AirVent
   return Zap
 }
 
-async function fetchEntityState(entityId: string) {
-  if (!haConfig.value.url || !haConfig.value.token)
-    return
+async function initConnection() {
+  if (!haConfig.value.url || !haConfig.value.token) return
+
   try {
-    const state = await fetchEntityStateApi({
-      url: haConfig.value.url,
-      token: haConfig.value.token,
-    }, entityId)
-    entitiesStates.value[entityId] = state
+    isConnecting.value = true
+    await haSocket.connect(haConfig.value.url, haConfig.value.token)
+    connectErrorText.value = ''
+    haSocket.subscribeToEntities((entities) => {
+      isConnecting.value = false
+      entitiesStates.value = entities
+    })
   }
   catch (e) {
-    console.error('HA Fetch Error:', e)
+    console.error('HA Connection Error:', e)
+    isConnecting.value = false
+    entitiesStates.value = {}
+    connectErrorText.value = '连接失败，请检查网络和配置'
   }
-}
-
-async function updateAllStates() {
-  isRefreshing.value = true
-
-  if (!haConfig.value.url || !haConfig.value.token) {
-    isRefreshing.value = false
-    return
-  }
-
-  const promises = haConfig.value.entities.map(entity => fetchEntityState(entity.id))
-  await Promise.all(promises)
-
-  // 模拟一点延迟感，避免刷新过快没有视觉反馈
-  setTimeout(() => {
-    isRefreshing.value = false
-  }, 500)
 }
 
 async function toggleEntity(entityId: string) {
+  if (!entitiesStates.value[entityId]) return
+
+  if (isConnecting.value) return
+
   const domain = entityId.split('.')[0]
   const isOn = isEntityOn(entityId)
 
@@ -111,18 +106,9 @@ async function toggleEntity(entityId: string) {
   loadingStates.value[entityId] = true
 
   try {
-    await callService(
-      {
-        url: haConfig.value.url,
-        token: haConfig.value.token,
-      },
-      domain,
-      service,
-      { entity_id: entityId },
-    )
-    setTimeout(() => fetchEntityState(entityId).then(() => {
-      loadingStates.value[entityId] = false
-    }), 500)
+    await haSocket.callService(domain, service, { entity_id: entityId })
+
+    loadingStates.value[entityId] = false
   }
   catch (e) {
     alert('操作失败，请检查网络和配置')
@@ -130,7 +116,13 @@ async function toggleEntity(entityId: string) {
   }
 }
 
-defineExpose({ updateAllStates, entitiesStates })
+onUnmounted(() => {
+  haSocket.disconnect()
+})
+
+watch([() => haConfig.value.url, () => haConfig.value.token], () => {
+  initConnection()
+}, { deep: true, immediate: true })
 </script>
 
 <template>
@@ -151,14 +143,11 @@ defineExpose({ updateAllStates, entitiesStates })
           </div>
         </div>
       </div>
-      <div class="flex gap-4">
-        <button
-          class="p-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all"
-          :class="{ 'opacity-50 pointer-events-none': isRefreshing }"
-          @click="updateAllStates"
-        >
-          <RotateCw class="w-5 h-5" :class="{ 'animate-spin': isRefreshing }" />
-        </button>
+      <div class="flex gap-4 items-center">
+        <div v-if="connectErrorText" class="flex items-center gap-2">
+          <AlertTriangle class="w-5 h-5 text-red-400" />
+          <span class="text-red-400 text-sm">{{ connectErrorText }}</span>
+        </div>
         <button class="p-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all" @click="showSettings = true">
           <Settings class="w-5 h-5" />
         </button>
@@ -170,7 +159,7 @@ defineExpose({ updateAllStates, entitiesStates })
         v-for="entity in haConfig.entities"
         :key="entity.id"
         class="ha-card"
-        :class="{ 'on': isEntityOn(entity.id), 'opacity-50 pointer-events-none': loadingStates[entity.id] }"
+        :class="{ 'on': isEntityOn(entity.id), 'opacity-50 pointer-events-none': isConnecting || loadingStates[entity.id] }"
         @click="toggleEntity(entity.id)"
       >
         <div class="flex items-center justify-between w-full mb-4">
@@ -178,7 +167,8 @@ defineExpose({ updateAllStates, entitiesStates })
             class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
             :class="isEntityOn(entity.id) ? 'bg-white text-black' : 'bg-white/10 text-white'"
           >
-            <Loader2 v-if="loadingStates[entity.id]" class="w-6 h-6 animate-spin" />
+            <Loader2 v-if="isConnecting || loadingStates[entity.id]" class="w-6 h-6 animate-spin" />
+            <AlertTriangle v-else-if="!entitiesStates[entity.id]" class="w-6 h-6 text-orange-400" />
             <component :is="getIcon(entity.id.split('.')[0], isEntityOn(entity.id))" v-else class="w-6 h-6" />
           </div>
 
@@ -204,7 +194,7 @@ defineExpose({ updateAllStates, entitiesStates })
               {{ entitiesStates[entity.id]?.attributes?.temperature ? `${entitiesStates[entity.id].attributes.temperature}°C` : '已开启' }}
             </template>
             <template v-else>
-              {{ isEntityOn(entity.id) ? '已开启' : '已关闭' }}
+              {{ !entitiesStates[entity.id] ? '未找到实体' : isEntityOn(entity.id) ? '已开启' : '已关闭' }}
             </template>
           </span>
         </div>
@@ -221,7 +211,6 @@ defineExpose({ updateAllStates, entitiesStates })
         :show="showSettings"
         :entities-states="entitiesStates"
         @close="showSettings = false"
-        @saved="updateAllStates"
       />
     </Teleport>
   </div>
