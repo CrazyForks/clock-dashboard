@@ -15,8 +15,6 @@
 > 直接访问[预览地址](https://teojs.github.io/clock-dashboard/)也可以安全使用Home Assistant，无需私有部署。
 > 第三方接口以及HA接口都是https请求，所以自部署需要通过https访问。
 
--
-
 ![时钟页面](./public/screenshots/4.gif)
 
 ---
