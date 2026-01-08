@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.16.1](https://github.com/teojs/clock-dashboard/compare/v1.16.0...v1.16.1) (2026-01-08)
+
+
+### Features
+
+* add SFCompactRounded font family and update font weights in styles for improved typography ([7d6cea3](https://github.com/teojs/clock-dashboard/commit/7d6cea323b56b5b116b09d2f56602cd85857d541))
+
 ## [1.16.0](https://github.com/teojs/clock-dashboard/compare/v1.15.4...v1.16.0) (2026-01-07)
 
 
