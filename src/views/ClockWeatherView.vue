@@ -136,11 +136,10 @@ const baseDelay = computed(() => {
   flex-wrap: nowrap !important;
   align-items: center;
   justify-content: center;
-  font-family: 'SF Pro Rounded', sans-serif;
+  font-family: 'SFCompactRounded', sans-serif;
   font-size: 35vw; /* iOS 12 Fallback 1: 响应式比例 */
   font-size: 22rem; /* iOS 12 Fallback 2: 强制大字号 */
   font-size: clamp(10rem, 35vw, 25rem);
-  font-weight: 700;
   line-height: 1.1;
 }
 

@@ -33,7 +33,7 @@ const presetColors = [
 function handleRestoreDefault() {
   draft.value = {
     color: '#ffffff',
-    fontWeight: 800,
+    fontWeight: 700,
     enableTilt: true,
     showSeconds: false,
     opacity: 0.9,
