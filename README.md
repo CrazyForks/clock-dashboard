@@ -9,11 +9,18 @@
 一个基于 Vue 3 + TypeScript + Vite + Tailwind CSS 构建的在线天气时钟看板。
 将闲置旧 iPad 变为时钟看板，支持天气、农历、日历、Home Assistant 智能设备控制（通过左右滑动切换页面）。
 
-**在线地址：** [https://teojs.github.io/clock-dashboard/](https://teojs.github.io/clock-dashboard/)
+**🌐 在线地址：** [https://teojs.github.io/clock-dashboard/](https://teojs.github.io/clock-dashboard/)
 
-> 💡 **隐私说明**
+**👏 欢迎加入讨论：** [QQ群(1018023465) ↗](https://qm.qq.com/q/x6hf1Evdni)
+
+🌟 如果本项目对你有帮助，不妨点点Star，或者[请我喝杯咖啡☕️](#%EF%B8%8F-请我喝杯咖啡)
+
+> ⚠️ 目前只在iOS 12.5测试过，其他更低系统还未适配。
+>
+> 💡 **隐私说明：**
 > 本项目为纯前端项目，所有接口均为直连，不存在隐私泄露风险。
 > 直接访问在线地址也可以安全使用 Home Assistant，无需私有部署。
+>
 > 第三方接口以及 HA 接口都是 HTTPS 请求，自部署需要通过 HTTPS 访问。
 
 ---
@@ -257,3 +264,7 @@ http:
 ## ☕️ 请我喝杯咖啡
 
 ![Buy me a coffee](./public/buy-me-a-coffee.png)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=teojs/clock-dashboard&type=date&legend=bottom-right)](https://www.star-history.com/#teojs/clock-dashboard&type=date&legend=bottom-right)s
