@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 import packageJson from '../../package.json'
 import { useConfigStore } from '../stores/config'
+import { isIpadIOS15OrLower } from '../utils/device'
 import CalendarSettings from './settings/CalendarSettings.vue'
 import ClockSettings from './settings/ClockSettings.vue'
 import SmartHomeSettings from './settings/SmartHomeSettings.vue'
@@ -61,7 +62,7 @@ function closeDrawer() {
     <!-- Drawer Content -->
     <div class="absolute top-0 left-0 bottom-0 w-full max-w-2xl p-2 drawer-content">
       <div class="relative flex w-full h-full border border-white/20 rounded-2xl bg-neutral-950">
-        <div class="absolute inset-20 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+        <div v-if="!isIpadIOS15OrLower()" class="absolute inset-20 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
 
         <!-- Sidebar -->
         <div class="w-20 md:w-48 border-r border-white/10 flex flex-col py-4 flex-shrink-0 overflow-y-auto">

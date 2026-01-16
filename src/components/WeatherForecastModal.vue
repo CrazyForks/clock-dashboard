@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { computed, onMounted, watch } from 'vue'
 import { useConfigStore } from '../stores/config'
 import { useWeatherStore } from '../stores/weather'
+import { isIpadIOS15OrLower } from '../utils/device'
 import { mapWmoCode } from '../utils/weather'
 
 const props = defineProps<{
@@ -137,7 +138,7 @@ function handleOverlayClick(e: MouseEvent) {
     <div
       class="max-h-[80vh] flex flex-col relative bg-neutral-950 rounded-3xl max-w-2xl w-full mx-4 border border-white/20"
     >
-      <div class="absolute inset-20 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+      <div v-if="!isIpadIOS15OrLower()" class="absolute inset-20 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
 
       <!-- 标题 -->
       <div class="px-8 pt-8 pb-6 flex items-center justify-between gap-4">
