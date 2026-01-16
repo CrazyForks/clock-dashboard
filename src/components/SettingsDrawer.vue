@@ -61,9 +61,11 @@ function closeDrawer() {
     >
       <!-- Drawer Content -->
       <div class="absolute top-0 left-0 bottom-0 w-full max-w-2xl p-2 drawer-content">
-        <div class="flex w-full h-full border border-white/10 rounded-2xl bg-neutral-900">
+        <div class="relative flex w-full h-full border border-white/20 rounded-2xl bg-neutral-950">
+          <div class="absolute inset-20 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+
           <!-- Sidebar -->
-          <div class="w-20 md:w-48 border-r border-white/5 flex flex-col py-4 flex-shrink-0 overflow-y-auto">
+          <div class="w-20 md:w-48 border-r border-white/10 flex flex-col py-4 flex-shrink-0 overflow-y-auto">
             <div class="px-4 mb-10 hidden md:block">
               <h2 class="text-xl font-bold tracking-tighter text-white/90">
                 设置中心
@@ -73,8 +75,8 @@ function closeDrawer() {
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
-                class="w-full flex flex-col md:flex-row items-center gap-3 px-3 py-4 md:py-3 rounded-xl transition-all duration-300"
-                :class="activeTab === tab.id ? 'bg-white text-black font-bold shadow-lg' : 'text-white/40 hover:text-white/70 hover:bg-white/5'"
+                class="w-full flex flex-col md:flex-row items-center gap-3 px-3 py-4 md:py-3 rounded-xl transition-all duration-300 border border-white/0 hover:border-white/60"
+                :class="activeTab === tab.id ? 'bg-white/[0.09] font-bold shadow-lg border-white/60' : 'text-white/40 hover:text-white/70 hover:bg-white/5'"
                 @click="activeTab = tab.id"
               >
                 <component :is="tab.icon" class="w-6 h-6" />
@@ -100,7 +102,7 @@ function closeDrawer() {
           <!-- Main Content -->
           <div class="flex-1 flex flex-col min-w-0">
             <!-- Header -->
-            <div class="flex items-center justify-between px-4 py-2 border-b border-white/5">
+            <div class="flex items-center justify-between px-4 py-2 border-b border-white/10">
               <h3 class="text-xl font-medium text-white">
                 {{ tabs.find(t => t.id === activeTab)?.name }}设置
               </h3>
@@ -164,7 +166,7 @@ function closeDrawer() {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 1rem;
   cursor: pointer;
@@ -173,11 +175,11 @@ function closeDrawer() {
   white-space: nowrap;
 }
 .settings-toggle-card:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.09);
   border-color: rgba(255, 255, 255, 0.1);
 }
 .settings-toggle-card.active {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.09);
   border-color: rgba(255, 255, 255, 0.2);
   color: white;
 }
@@ -212,19 +214,19 @@ function closeDrawer() {
 .settings-tab-btn {
   padding: 0.5rem 0.5rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.4);
   font-weight: 500;
   transition: all 0.3s;
 }
 .settings-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
 }
 .settings-tab-btn.active {
-  background: white;
-  border-color: white;
-  color: black;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: white;
   font-weight: bold;
 }
 

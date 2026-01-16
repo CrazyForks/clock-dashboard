@@ -137,7 +137,7 @@ defineExpose({ save, reset })
           </div>
           <div class="space-y-4">
             <div v-for="(entity, index) in smartConfig.entities" :key="entity.id || index" class="relative flex gap-2 items-stretch group">
-              <div class="flex flex-col justify-between opacity-60 group-hover:opacity-100 transition-opacity flex-shrink-0 border border-white/10 rounded-2xl px-1 py-1.5 bg-white/5">
+              <div class="flex flex-col justify-between opacity-60 flex-shrink-0 border border-white/10 rounded-2xl px-1 py-1.5 bg-white/5">
                 <button class="bg-white/10 rounded-full p-1 text-white/80 hover:text-white hover:bg-white/20 transition-all" @click="moveEntity(index, -1)">
                   <ChevronUp class="w-4 h-4" />
                 </button>
@@ -161,13 +161,13 @@ defineExpose({ save, reset })
               </div>
               <div class="flex flex-col justify-between transition-opacity flex-shrink-0 border border-white/5 rounded-2xl px-1 py-1.5 bg-white/5">
                 <button
-                  class="bg-white/10 rounded-full p-1 text-white/50 transition-all"
+                  class="bg-white/10 rounded-full p-1 text-white/50 transition-all hover:text-white hover:bg-white/20"
                   @click="addEntity(index)"
                 >
                   <Plus class="w-4 h-4" />
                 </button>
                 <button
-                  class="bg-white/10 rounded-full p-1 text-white/50 transition-all"
+                  class="bg-white/10 rounded-full p-1 text-white/50 transition-all hover:text-white hover:bg-white/20"
                   @click="removeEntity(index)"
                 >
                   <Minus class="w-4 h-4" />

@@ -122,8 +122,10 @@ function handleOverlayClick(e: MouseEvent) {
       @touchend.stop
     >
       <div
-        class="max-h-[80vh] flex flex-col relative bg-neutral-900 rounded-3xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden border border-white/10"
+        class="max-h-[80vh] flex flex-col relative bg-neutral-950 rounded-3xl max-w-2xl w-full mx-4 overflow-hidden border border-white/20"
       >
+        <div class="absolute inset-20 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+
         <!-- 关闭按钮 -->
         <button
           class="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all hover:rotate-90 duration-300"
@@ -184,7 +186,7 @@ function handleOverlayClick(e: MouseEvent) {
             <div
               v-for="(day, index) in forecastDays"
               :key="index"
-              class="flex items-center justify-between gap-6 py-2 px-6 rounded-2xl bg-white/5 hover:bg-white/10 transition-all duration-300"
+              class="flex items-center justify-between gap-6 py-2 px-6 rounded-2xl bg-white/5"
             >
               <!-- 左侧：日期、天气、降雨 -->
               <div class="flex items-center gap-4 flex-1">
