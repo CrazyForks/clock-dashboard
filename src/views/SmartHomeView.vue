@@ -143,7 +143,7 @@ watch([() => haConfig.value.url, () => haConfig.value.token], () => {
 </script>
 
 <template>
-  <div class="glass-panel py-[6vh] flex flex-col items-center text-white h-full justify-start overflow-y-auto w-full">
+  <div class="glass-panel py-[6vh] text-white h-full overflow-y-auto w-full">
     <div class="flex items-center justify-between w-full mb-[2vh] px-[5vh]">
       <div class="flex items-baseline space-x-6">
         <h2 class="text-[4vh] font-bold tracking-widest text-nowrap leading-[5vh]">
@@ -203,17 +203,17 @@ watch([() => haConfig.value.url, () => haConfig.value.token], () => {
         </div>
 
         <div class="flex flex-col overflow-hidden w-full">
-          <span class="font-bold text-[2.4vh] truncate w-full">
+          <div class="font-bold text-[2.4vh] truncate w-full">
             {{ entity.name || (entitiesStates[entity.id] && entitiesStates[entity.id].attributes && entitiesStates[entity.id].attributes.friendly_name) || entity.id }}
-          </span>
-          <span class="text-[2vh] opacity-50 uppercase tracking-widest">
+          </div>
+          <div class="text-[2vh] opacity-50 uppercase tracking-widest">
             <template v-if="entity.id.startsWith('climate.') && isEntityOn(entity.id)">
               {{ entitiesStates[entity.id]?.attributes?.temperature ? `${entitiesStates[entity.id].attributes.temperature}°C` : t('smartHome.statusOn') }}
             </template>
             <template v-else>
               {{ !entitiesStates[entity.id] ? t('smartHome.notFound') : isEntityOn(entity.id) ? t('smartHome.statusOn') : t('smartHome.statusOff') }}
             </template>
-          </span>
+          </div>
         </div>
       </div>
     </div>

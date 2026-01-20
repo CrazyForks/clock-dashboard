@@ -83,6 +83,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   color: white;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes float {

@@ -129,7 +129,7 @@ function closeDrawer() {
           </div>
 
           <!-- Scrollable Area -->
-          <div class="flex-1 overflow-y-auto p-6 settings-scroll-area">
+          <div class="flex-1 overflow-y-auto p-6">
             <GeneralSettings v-if="activeTab === 'general'" ref="generalSettingsRef" />
             <ClockSettings v-if="activeTab === 'clock'" ref="clockSettingsRef" />
             <WeatherSettings v-if="activeTab === 'weather'" ref="weatherSettingsRef" />
@@ -145,10 +145,6 @@ function closeDrawer() {
 <style scoped>
 .cubic-bezier {
   transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.settings-scroll-area {
-  -webkit-overflow-scrolling: touch;
 }
 </style>
 
