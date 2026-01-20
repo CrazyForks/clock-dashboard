@@ -135,7 +135,7 @@ defineExpose({ refreshToday })
 
 <template>
   <div class="full-screen-calendar text-white">
-    <div class="flex items-center justify-between w-full mb-[1.5vh] px-[2vh]">
+    <div class="flex items-center justify-between w-full mb-[2vh] px-[2vh]">
       <div class="text-left">
         <h2 class="text-[6vh] leading-[6vh] font-bold tracking-widest">
           {{ monthLabel }}
@@ -163,7 +163,7 @@ defineExpose({ refreshToday })
       </div>
     </div>
 
-    <div class="flex-1 flex flex-col w-full">
+    <div class="h-[calc(100vh-13.5vh)] flex flex-col w-full">
       <div class="grid grid-cols-7 mb-2">
         <div v-for="d in weekHeaders" :key="d" class="calendar-header-day text-[2.6vh] leading-none font-bold">
           {{ d }}
@@ -177,9 +177,9 @@ defineExpose({ refreshToday })
           :class="{ 'other-month': day.isOtherMonth, 'today': day.isToday }"
           @click="handleDayClick(day)"
         >
-          <div class="day-number-wrapper flex flex-col items-center justify-center">
+          <div class="day-number-wrapper flex flex-col items-center justify-center overflow-hidden px-2">
             <span class="text-[4vh] leading-none font-bold">{{ day.date.getDate() }}</span>
-            <div v-if="showLunar" class="lunar-text text-[1.9vh] leading-none font-normal mt-[1vh] text-center">
+            <div v-if="showLunar" class="lunar-text text-[1.9vh] leading-none font-normal mt-[1vh] text-center line-clamp-1">
               <span
                 :class="day.lunar.isFestival ? 'text-blue-300 opacity-100' : 'opacity-60'"
               >
@@ -236,7 +236,6 @@ defineExpose({ refreshToday })
   justify-content: center;
   transition: all 0.2s;
   position: relative;
-  min-height: 0;
   background-color: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0);
   border-radius: 12px;

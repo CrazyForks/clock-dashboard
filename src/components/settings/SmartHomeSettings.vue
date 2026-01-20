@@ -117,7 +117,7 @@ onMounted(() => {
       <h4 class="text-white/60 mb-4 uppercase tracking-widest text-sm font-medium">
         {{ t('smartHomeSettings.layoutSettings') }}
       </h4>
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap space-x-3">
         <button
           v-for="col in [3, 4, 5]"
           :key="col"
