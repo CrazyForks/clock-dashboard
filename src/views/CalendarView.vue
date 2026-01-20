@@ -135,37 +135,37 @@ defineExpose({ refreshToday })
 
 <template>
   <div class="full-screen-calendar text-white">
-    <div class="flex items-center justify-between w-full mb-8 px-4">
+    <div class="flex items-center justify-between w-full mb-[1.5vh] px-[2vh]">
       <div class="text-left">
-        <h2 class="text-4xl md:text-5xl font-bold tracking-widest">
+        <h2 class="text-[6vh] leading-[6vh] font-bold tracking-widest">
           {{ monthLabel }}
         </h2>
       </div>
       <div class="flex items-center space-x-3">
-        <button class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300" @click="changeMonth(-1)">
-          <ChevronLeft class="w-6 h-6 " />
+        <button class="p-[1.1vh] bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300" @click="changeMonth(-1)">
+          <ChevronLeft class="w-[3.1vh] h-[3.1vh] " />
         </button>
         <button
-          class="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 text-md font-medium"
+          class="px-[2.5vh] py-[1.4vh] bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 text-[2.2vh] leading-none font-medium"
           @click="goToToday"
         >
           {{ t('calendar.today') }}
         </button>
-        <button class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300" @click="changeMonth(1)">
-          <ChevronRight class="w-6 h-6 " />
+        <button class="p-[1.1vh] bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300" @click="changeMonth(1)">
+          <ChevronRight class="w-[3.1vh] h-[3.1vh] " />
         </button>
         <button
-          class="p-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 ml-2"
+          class="p-[1.1vh] bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 ml-2"
           @click="openSettings"
         >
-          <Settings class="w-6 h-6" />
+          <Settings class="w-[3.1vh] h-[3.1vh]" />
         </button>
       </div>
     </div>
 
     <div class="flex-1 flex flex-col w-full">
       <div class="grid grid-cols-7 mb-2">
-        <div v-for="d in weekHeaders" :key="d" class="calendar-header-day text-xl font-bold">
+        <div v-for="d in weekHeaders" :key="d" class="calendar-header-day text-[2.6vh] leading-none font-bold">
           {{ d }}
         </div>
       </div>
@@ -178,8 +178,8 @@ defineExpose({ refreshToday })
           @click="handleDayClick(day)"
         >
           <div class="day-number-wrapper flex flex-col items-center justify-center">
-            <span class="text-2xl md:text-3xl font-bold">{{ day.date.getDate() }}</span>
-            <div v-if="showLunar" class="lunar-text text-sm font-normal mt-1 text-center">
+            <span class="text-[4vh] leading-none font-bold">{{ day.date.getDate() }}</span>
+            <div v-if="showLunar" class="lunar-text text-[1.9vh] leading-none font-normal mt-[1vh] text-center">
               <span
                 :class="day.lunar.isFestival ? 'text-blue-300 opacity-100' : 'opacity-60'"
               >
@@ -215,7 +215,7 @@ defineExpose({ refreshToday })
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 4vh;
   box-sizing: border-box;
 }
 
@@ -253,16 +253,9 @@ defineExpose({ refreshToday })
 
 .calendar-header-day {
   text-align: center;
-  padding: 10px 0;
+  padding: 3vh 0;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   opacity: 0.5;
-}
-
-@media (max-width: 768px) {
-  .calendar-day.today .day-number-wrapper {
-    width: 60px;
-    height: 60px;
-  }
 }
 </style>
