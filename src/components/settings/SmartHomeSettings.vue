@@ -10,11 +10,12 @@ import TestHAConnection from './TestHAConnection.vue'
 
 const configStore = useConfigStore()
 const haStore = useHAStore()
-const { haConfig } = storeToRefs(configStore)
+const { haConfig, haLayout: haLayoutConfig } = storeToRefs(configStore)
 const { entitiesStates } = storeToRefs(haStore)
 const { t } = useI18n()
 
 const smartConfig = ref<HAConfig>(JSON.parse(JSON.stringify(haConfig.value)))
+const layoutDraft = ref({ ...haLayoutConfig.value })
 const isJsonMode = ref(false)
 const jsonInput = ref('')
 const entityNameMap = ref<Record<string, string>>({})
@@ -94,10 +95,12 @@ function save() {
     }
   }
   haConfig.value = JSON.parse(JSON.stringify(smartConfig.value))
+  haLayoutConfig.value = { ...layoutDraft.value }
 }
 
 function reset() {
   smartConfig.value = JSON.parse(JSON.stringify(haConfig.value))
+  layoutDraft.value = { ...haLayoutConfig.value }
   refreshEntityNameMap()
 }
 
@@ -110,6 +113,23 @@ onMounted(() => {
 
 <template>
   <div class="space-y-10 animate-fade-in">
+    <section>
+      <h4 class="text-white/60 mb-4 uppercase tracking-widest text-sm font-medium">
+        {{ t('smartHomeSettings.layoutSettings') }}
+      </h4>
+      <div class="flex flex-wrap gap-3">
+        <button
+          v-for="col in [3, 4, 5]"
+          :key="col"
+          class="settings-tab-btn flex-1 whitespace-nowrap"
+          :class="{ active: layoutDraft.columns === col }"
+          @click="layoutDraft.columns = col"
+        >
+          {{ col }} {{ t('smartHomeSettings.columnsPerRow') }}
+        </button>
+      </div>
+    </section>
+
     <section class="flex flex-col space-y-4">
       <div class="flex items-center justify-between mb-6">
         <h4 class="text-white/60 uppercase tracking-widest text-sm font-medium">

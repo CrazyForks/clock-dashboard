@@ -83,7 +83,9 @@
     "addDevice": "添加设备",
     "jsonPlaceholder": "{ \"url\": \"...\", \"token\": \"...\", \"entities\": [] }",
     "jsonInvalid": "JSON 格式错误，请检查后再切换模式",
-    "jsonInvalidSave": "JSON 格式错误，保存失败"
+    "jsonInvalidSave": "JSON 格式错误，保存失败",
+    "layoutSettings": "布局设置",
+    "columnsPerRow": "列"
   },
   "ha": {
     "testConnection": "测试连接",

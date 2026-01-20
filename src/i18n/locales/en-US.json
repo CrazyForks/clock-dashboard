@@ -83,7 +83,9 @@
     "addDevice": "Add Device",
     "jsonPlaceholder": "{ \"url\": \"...\", \"token\": \"...\", \"entities\": [] }",
     "jsonInvalid": "Invalid JSON. Check and try again.",
-    "jsonInvalidSave": "Invalid JSON. Save failed."
+    "jsonInvalidSave": "Invalid JSON. Save failed.",
+    "layoutSettings": "Layout Settings",
+    "columnsPerRow": "columns"
   },
   "ha": {
     "testConnection": "Test Connection",

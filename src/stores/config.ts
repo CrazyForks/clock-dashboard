@@ -10,6 +10,10 @@ export const useConfigStore = defineStore('config', () => {
   const activeTab = ref<'general' | 'clock' | 'weather' | 'calendar' | 'smart'>('general')
   const language = ref(defaultLanguage)
 
+  const haLayout = ref({
+    /** 每行显示的设备数量：3、4 或 5 */
+    columns: 3,
+  })
   const haConfig = ref<HAConfig>({
     url: '',
     token: '',
@@ -39,6 +43,7 @@ export const useConfigStore = defineStore('config', () => {
   })
 
   return {
+    haLayout,
     haConfig,
     clockConfig,
     calendarConfig,
