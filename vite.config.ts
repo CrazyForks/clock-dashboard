@@ -47,8 +47,8 @@ export default defineConfig({
             form_factor: 'wide',
           },
           {
-            src: 'screenshots/1.png',
-            sizes: '2048x1536',
+            src: 'screenshots/5.png',
+            sizes: '2532×1170',
             type: 'image/png',
           },
         ],
