@@ -17,7 +17,7 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'pwa-192x192.png', 'pwa-512x512.png'],
+      includeAssets: [],
       manifest: {
         id: 'clock-dashboard',
         name: '天气时钟',
@@ -29,14 +29,28 @@ export default defineConfig({
         display_override: ['window-controls-overlay'],
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'favicon/web-app-manifest-192x192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any',
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'favicon/web-app-manifest-512x512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'favicon/web-app-manifest-maskable-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+          {
+            src: 'favicon/web-app-manifest-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
           },
         ],
         screenshots: [
